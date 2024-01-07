@@ -9,6 +9,7 @@ const {
   deleteComponentsByParent,
 } = require("../services/component-service");
 const fs = require("fs");
+const { createChat, deleteChat } = require("../services/chat-service");
 
 function runSocket(server) {
   const io = new Server(server, {
@@ -62,6 +63,16 @@ function runSocket(server) {
       } else if (component.type === "Room") {
         deleteComponentsByParent(component.id);
       }
+    });
+
+    socket.on("create-chat", async ({ chat, room }) => {
+      io.to(room).emit("create-chat", { id: socket.id, chat });
+      createChat(chat);
+    });
+
+    socket.on("delete-chat", async ({ chat, room }) => {
+      io.to(room).emit("delete-chat", { id: socket.id, chat });
+      deleteChat(chat.id);
     });
 
     socket.on("disconnect", () => {

@@ -10,6 +10,7 @@ const { authentication } = require("./middlewares/authentication-middleware");
 const { runSocket } = require("./socket/socket");
 const { uploadRoute } = require("./routes/upload-route");
 const { componentRoute } = require("./routes/component-route");
+const { chatRoute } = require("./routes/chat-route");
 
 runSocket(server);
 
@@ -20,6 +21,7 @@ app.use(authentication);
 app.use("/api/link-preview", linkPreviewRoute);
 app.use("/api/users", userRoute);
 app.use("/api/components", componentRoute);
+app.use("/api/chats", chatRoute);
 app.use("/api/upload", uploadRoute);
 
 server.listen(config.PORT, async () => {
